@@ -47,6 +47,7 @@ DAC_HandleTypeDef hdac;
 UART_HandleTypeDef huart1;
 
 osThreadId defaultTaskHandle;
+osMutexId RegisterMutexHandle;
 
 /* USER CODE BEGIN PV */
 
@@ -94,6 +95,11 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
+
+  /* Create the mutex(es) */
+  /* definition and creation of RegisterMutex */
+  osMutexDef(RegisterMutex);
+  RegisterMutexHandle = osMutexCreate(osMutex(RegisterMutex));
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
