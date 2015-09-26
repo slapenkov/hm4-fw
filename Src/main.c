@@ -35,6 +35,12 @@
 #include "stm32f1xx_hal.h"
 
 /* USER CODE BEGIN Includes */
+#define MODBUS_SERIAL_BAUD 115200 //set speed
+#define MODBUS_SWITCH USART_1
+#define MODBUS_SERIAL_RX_BUFFER_SIZE  256
+#define MODBUS_ADDRESS 0x01 //set slave address
+
+#include "modbus.h"
 
 /* USER CODE END Includes */
 
@@ -45,7 +51,7 @@ DAC_HandleTypeDef hdac;
 
 TIM_HandleTypeDef htim7;
 
-UART_HandleTypeDef huart1;
+UART_HandleTypeDef mbuart;
 
 /* USER CODE BEGIN PV */
 
@@ -56,7 +62,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_DAC_Init(void);
-static void MX_TIM7_Init(void);
+//static void MX_TIM7_Init(void);
 static void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
@@ -86,10 +92,11 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_DAC_Init();
-  MX_TIM7_Init();
+ // MX_TIM7_Init();
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
+  modbus_init();
 
   /* USER CODE END 2 */
 
@@ -200,8 +207,6 @@ void MX_TIM7_Init(void)
   htim7.Init.Period = 4000;
   HAL_TIM_Base_Init(&htim7);
 
-  HAL_TIM_OnePulse_Init(&htim7, TIM_OPMODE_SINGLE);
-
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig);
@@ -212,17 +217,18 @@ void MX_TIM7_Init(void)
 void MX_USART1_UART_Init(void)
 {
 
-  huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_TX_RX;
-  huart1.Init.HwFlowCtl = UART_HWCONTROL_RTS;
-  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  HAL_UART_Init(&huart1);
+  mbuart.Instance = USART1;
+  mbuart.Init.BaudRate = MODBUS_SERIAL_BAUD;
+  mbuart.Init.WordLength = UART_WORDLENGTH_8B;
+  mbuart.Init.StopBits = UART_STOPBITS_1;
+  mbuart.Init.Parity = UART_PARITY_NONE;
+  mbuart.Init.Mode = UART_MODE_TX_RX;
+  mbuart.Init.HwFlowCtl = UART_HWCONTROL_RTS;
+  mbuart.Init.OverSampling = UART_OVERSAMPLING_16;
+  HAL_UART_Init(&mbuart);
 
 }
+
 
 /** Configure pins as 
         * Analog 
