@@ -33,7 +33,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
-#include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -44,10 +43,9 @@ ADC_HandleTypeDef hadc1;
 
 DAC_HandleTypeDef hdac;
 
-UART_HandleTypeDef huart1;
+TIM_HandleTypeDef htim7;
 
-osThreadId defaultTaskHandle;
-osMutexId RegisterMutexHandle;
+UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 
@@ -58,8 +56,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_DAC_Init(void);
+static void MX_TIM7_Init(void);
 static void MX_USART1_UART_Init(void);
-void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -73,8 +71,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
-	int i=0; //for debug
 
   /* USER CODE END 1 */
 
@@ -90,57 +86,21 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_DAC_Init();
+  MX_TIM7_Init();
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
-  /* Create the mutex(es) */
-  /* definition and creation of RegisterMutex */
-  osMutexDef(RegisterMutex);
-  RegisterMutexHandle = osMutexCreate(osMutex(RegisterMutex));
-
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
- 
-
-  /* Start scheduler */
-  osKernelStart();
-  
-  /* We should never get here as control is now taken by the scheduler */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+	while (1) {
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
 
-  }
+	}
   /* USER CODE END 3 */
 
 }
@@ -228,12 +188,32 @@ void MX_DAC_Init(void)
 
 }
 
+/* TIM7 init function */
+void MX_TIM7_Init(void)
+{
+
+  TIM_MasterConfigTypeDef sMasterConfig;
+
+  htim7.Instance = TIM7;
+  htim7.Init.Prescaler = 32;
+  htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim7.Init.Period = 4000;
+  HAL_TIM_Base_Init(&htim7);
+
+  HAL_TIM_OnePulse_Init(&htim7, TIM_OPMODE_SINGLE);
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig);
+
+}
+
 /* USART1 init function */
 void MX_USART1_UART_Init(void)
 {
 
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 19200;
+  huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -299,19 +279,6 @@ void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* StartDefaultTask function */
-void StartDefaultTask(void const * argument)
-{
-
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */ 
-}
-
 #ifdef USE_FULL_ASSERT
 
 /**
@@ -324,8 +291,8 @@ void StartDefaultTask(void const * argument)
 void assert_failed(uint8_t* file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-    ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	/* User can add his own implementation to report the file name and line number,
+	 ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 
 }
