@@ -7,6 +7,8 @@
 ////  Refer to documentation at http://www.modbus.org for more information on MODBUS. ////
 
 #include "modbus.h"
+#include "stm32f1xx_hal_def.h"
+
 
 /*
  * useful routines
@@ -22,21 +24,22 @@ int16_t make16(int8_t varhigh, int8_t varlow){
 }
 
 //USART send data with wait
-void USART_SendDataWait(USART_TypeDef* USARTx, uint16_t Data)
+void Transmitt(UART_HandleTypeDef *huart, uint16_t Data)
 {
-  /* Check the parameters */
-  assert_param(IS_USART_ALL_PERIPH(USARTx));
-  assert_param(IS_USART_DATA(Data));
-
   /* Transmit Data */
-  USARTx->DR = (Data & (uint16_t)0x01FF);
+  huart->Instance->DR = (Data & (uint16_t)0x01FF);
 
   /*wait for transmission complete*/
-  while(__HAL_UART_GET_FLAG(&mbuart, UART_FLAG_TC));
+  while(__HAL_UART_GET_FLAG(&huart, UART_FLAG_TC));
 
-  __HAL_UART_CLEAR_FLAG(&mbuart, UART_FLAG_TC);
+  __HAL_UART_CLEAR_FLAG(&huart, UART_FLAG_TC);
+}
 
-  //delay_us(1);
+
+//uart receive data from DR
+uint16_t Receive(UART_HandleTypeDef *huart){
+
+	return (uint16_t)(huart->Instance->DR & (uint16_t)0x01FF);
 }
 
 //delay_us
@@ -92,46 +95,31 @@ void modbus_init(void){
 	//uart hardware was previously init by main function
 
 	//setup USART interrupt
-	//TODO rewrite to using HAL_CORTEX driver
-	NVIC_InitTypeDef NVIC_InitStructure;
 
 #if (MODBUS_SWITCH==USART_1)
-	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-#elif (MODBUS_SWITCH==USART_2)
-	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-#elif (MODBUS_SWITCH==USART_3)
-	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-#endif
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
+	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(USART1_IRQn);
 
+#elif (MODBUS_SWITCH==USART_2)
+	HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(USART2_IRQn);
+
+#elif (MODBUS_SWITCH==USART_3)
+	HAL_NVIC_SetPriority(USART3_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(USART3_IRQn);
+
+#endif
 
    //clear port and enable it's interrupt
 	RCV_ON();
 
    //if rtu mode - setup timer and it's interrupts
 #if (MODBUS_SERIAL_TYPE == MODBUS_RTU)
-	//on timer module
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
-
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-
-	//setup timer
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //set up counter mode
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; //clock division is 1:1
-	TIM_TimeBaseStructure.TIM_Prescaler = SystemCoreClock/1000000; //setup prescaler to 1 us count
-	TIM_TimeBaseStructure.TIM_Period = 4000; //setup 4 mS timer reload
-	TIM_TimeBaseInit(TIM7, &TIM_TimeBaseStructure); //load timer structure
-	TIM_Cmd(TIM7, ENABLE); //start module
+	//timer module set active in main
 
 	//setup TIM7 interrupt
-	NVIC_InitStructure.NVIC_IRQChannel = TIM7_IRQn; //select irq channel
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1; //setup priority
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1; //setup subpriority
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //enable channel
-	NVIC_Init(&NVIC_InitStructure);
+	HAL_NVIC_SetPriority(TIM7_IRQn, 1, 1);
+	HAL_NVIC_EnableIRQ(TIM7_IRQn);
 
 
 #endif
@@ -145,14 +133,14 @@ void modbus_init(void){
 void modbus_enable_timeout(uint8_t enable)
 {
    //disable timer interrupts
-	TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
+	__HAL_TIM_DISABLE_IT(&mbtim, TIM_IT_UPDATE);
    if (enable) {
       //reset counter
-	   TIM_SetCounter(TIM7, 0);
+	   __HAL_TIM_SET_COUNTER(&mbtim, 0);
       //clear timer interrupt;
-	   TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
+	   __HAL_TIM_CLEAR_IT(&mbtim, TIM_IT_UPDATE);
       //enable timer interrupts
-	   TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
+	   __HAL_TIM_ENABLE_IT(&mbtim, TIM_IT_UPDATE);
    }
 }
 #endif
@@ -213,11 +201,12 @@ void modbus_serial_putc(uint8_t c)
          asciil+=0x37;
       else
          asciil+=0x30;
-      USART_SendDataWait(MODBUS_PORT,(uint8_t)asciih);//fputc(asciih,MODBUS_SERIAL);
-      USART_SendDataWait(MODBUS_PORT,(uint8_t)asciil);//fputc(asciil,MODBUS_SERIAL);
+      Transmitt(&mbuart, (uint8_t)asciih);//fputc(asciih,MODBUS_SERIAL);
+      Transmitt(&mbuart, (uint8_t)asciil);//fputc(asciil,MODBUS_SERIAL);
       modbus_calc_crc(c);
    #else
-      USART_SendDataWait(MODBUS_PORT,(uint8_t)c);//fputc(c, MODBUS_SERIAL);
+      //SendDataWait(MODBUS_PORT,(uint8_t)c);//fputc(c, MODBUS_SERIAL);
+      Transmitt(&mbuart, (uint8_t)c);
       modbus_calc_crc(c);
       delay_us(1000000/MODBUS_SERIAL_BAUD); //one stop bit
    #endif
@@ -240,7 +229,7 @@ void USART3_IRQHandler(void)
       static uint8_t datah,datal,data;
    #endif
 
-   c = USART_ReceiveData(MODBUS_PORT);//c=fgetc(MODBUS_SERIAL);
+      c = (char)Receive(&mbuart);//c=fgetc(MODBUS_SERIAL);
    
    if (!modbus_serial_new)
    {

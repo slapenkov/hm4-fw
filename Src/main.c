@@ -49,7 +49,7 @@ ADC_HandleTypeDef hadc1;
 
 DAC_HandleTypeDef hdac;
 
-TIM_HandleTypeDef htim7;
+TIM_HandleTypeDef mbtim;
 
 UART_HandleTypeDef mbuart;
 
@@ -62,7 +62,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_DAC_Init(void);
-//static void MX_TIM7_Init(void);
+static void MX_TIM7_Init(void);
 static void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
@@ -92,10 +92,12 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_DAC_Init();
- // MX_TIM7_Init();
+  MX_TIM7_Init();
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
+
+  /* Initialization of modbus layer */
   modbus_init();
 
   /* USER CODE END 2 */
@@ -140,7 +142,7 @@ void SystemClock_Config(void)
   PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
 
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000); //sys Tick config
 
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
@@ -201,15 +203,16 @@ void MX_TIM7_Init(void)
 
   TIM_MasterConfigTypeDef sMasterConfig;
 
-  htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 32;
-  htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim7.Init.Period = 4000;
-  HAL_TIM_Base_Init(&htim7);
+  mbtim.Instance = TIM7;
+  mbtim.Init.Prescaler = 32;
+  mbtim.Init.CounterMode = TIM_COUNTERMODE_UP;
+  mbtim.Init.Period = 4000;
+  mbtim.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  HAL_TIM_Base_Init(&mbtim);
 
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  /*sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig);
+  HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig);*/
 
 }
 

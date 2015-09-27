@@ -234,7 +234,7 @@
  */
 
 extern UART_HandleTypeDef mbuart;
-
+extern TIM_HandleTypeDef mbtim;
 /*
  * useful routines
  */
@@ -376,6 +376,17 @@ static const uint8_t modbus_auchCRCLo[] = {
 0x40
 };
 #endif
+
+/*
+ * Private prototypes
+ * */
+//transmitt one data portion
+void Transmitt(UART_HandleTypeDef *huart, uint16_t Data);
+
+//receive data portion
+uint16_t Receive(UART_HandleTypeDef *huart);
+
+
 
 // Purpose:    Enable data reception
 // Inputs:     None
