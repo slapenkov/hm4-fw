@@ -30,9 +30,9 @@ void Transmitt(UART_HandleTypeDef *huart, uint16_t Data)
   huart->Instance->DR = (Data & (uint16_t)0x01FF);
 
   /*wait for transmission complete*/
-  while(__HAL_UART_GET_FLAG(&huart, UART_FLAG_TC));
+  while(__HAL_UART_GET_FLAG(huart, UART_FLAG_TC));
 
-  __HAL_UART_CLEAR_FLAG(&huart, UART_FLAG_TC);
+  __HAL_UART_CLEAR_FLAG(huart, UART_FLAG_TC);
 }
 
 

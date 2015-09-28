@@ -56,7 +56,6 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.671550322" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="STM32F100xB"/>
-									<listOptionValue builtIn="false" value="USE_FULL_ASSERT"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1842435403" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -71,17 +70,14 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.2082223627" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="STM32F100xB"/>
-									<listOptionValue builtIn="false" value="USE_FULL_ASSERT"/>
 								</option>
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files.1972843388" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files" useByScannerDiscovery="false" valueType="includeFiles">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h}&quot;"/>
-								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files.1972843388" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files" useByScannerDiscovery="false" valueType="includeFiles"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nostdinc.485482496" name="Do not search system directories (-nostdinc)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nostdinc" useByScannerDiscovery="true" value="false" valueType="boolean"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.263942027" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.407923253" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.928328938" name="Cross ARM C Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker">
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections.1069030347" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections" value="false" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections.1069030347" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.gcsections" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs.1225440115" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.libs"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.scriptfile.798959729" name="Script files (-T)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.scriptfile" valueType="stringList">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/TrueSTUDIO/hm4-fw-0.1.0 Configuration/STM32F100RB_FLASH.ld}&quot;"/>
@@ -179,8 +175,16 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.254605220" name="Cross ARM GNU Print Size" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.996266536"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.358807401.563560680" name="modbus.h" rcbsApplicability="disable" resourcePath="Inc/modbus.h" toolsToInvoke="">
+						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.873541638" name="Resource Custom Build Step">
+							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.2065472452" name="Resource Custom Build Step Input Type">
+								<additionalInput kind="additionalinputdependency" paths=""/>
+							</inputType>
+							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.1419171064" name="Resource Custom Build Step Output Type"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f107xc.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f105xc.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xg.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103x6.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f102x6.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f102xb.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101xe.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101xg.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101x6.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101xb.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f100xe.h" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
+						<entry excluding="Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f107xc.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f105xc.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xg.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103x6.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f102x6.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f102xb.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101xe.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101xg.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101x6.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101xb.h|Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f100xe.h" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -242,7 +246,6 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.455330154" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="STM32F100xB"/>
-									<listOptionValue builtIn="false" value="USE_FULL_ASSERT"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.468216986" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -260,7 +263,6 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.651918776" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
 									<listOptionValue builtIn="false" value="STM32F100xB"/>
-									<listOptionValue builtIn="false" value="USE_FULL_ASSERT"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1349165351" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
