@@ -40,7 +40,7 @@
 #define MODBUS_SERIAL_RX_BUFFER_SIZE  256
 #define MODBUS_ADDRESS 0x01 //set slave address
 
-#include "modbus.h"
+//#include "modbus.h"
 
 /* USER CODE END Includes */
 
@@ -98,7 +98,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* Initialization of modbus layer */
-  modbus_init();
+  //modbus_init();
 
   /* USER CODE END 2 */
 

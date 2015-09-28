@@ -7,7 +7,7 @@
 ////  Refer to documentation at http://www.modbus.org for more information on MODBUS. ////
 
 #include "modbus.h"
-#include "stm32f1xx_hal_def.h"
+//#include "stm32f1xx_hal_def.h"
 
 
 /*

@@ -170,7 +170,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "stm32f1xx_hal_uart.h"
+//#include "stm32f1xx_hal_def.h"
+//#include "stm32f1xx_hal_uart.h"
 
 #define TRUE 1
 #define FALSE 0
