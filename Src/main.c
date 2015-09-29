@@ -4,7 +4,7 @@
  * Description        : Main program body
  ******************************************************************************
  *
- * COPYRIGHT(c) 2015 STMicroelectronics
+ * COPYRIGHT(c) 2015 MWT
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -352,9 +352,11 @@ void MX_GPIO_Init(void) {
 
 }
 
-/* USER CODE BEGIN 4 */
 
-/* USER CODE END 4 */
+void HAL_SYSTICK_Callback(void) {
+//TODO add state machine code here
+}
+
 
 #ifdef USE_FULL_ASSERT
 
@@ -384,4 +386,4 @@ void assert_failed(uint8_t* file, uint32_t line)
  * @}
  */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/************************END OF FILE****/
