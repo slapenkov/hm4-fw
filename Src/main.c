@@ -53,6 +53,18 @@ TIM_HandleTypeDef mbtim;
 
 UART_HandleTypeDef mbuart;
 
+static int16_t hold_regs[]={
+		0x0001,
+		0x0002,
+		0x0003,
+		0x0004,
+		0x0005,
+		0x0006,
+		0x0008,
+		0x0009,
+		0x000A
+};
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -142,6 +154,7 @@ void SystemClock_Config(void)
   PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
 
+  //TODO Configure SysTick timer speed
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000); //sys Tick config
 
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
