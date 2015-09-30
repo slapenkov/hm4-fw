@@ -353,10 +353,6 @@ void MX_GPIO_Init(void) {
 }
 
 
-void HAL_SYSTICK_Callback(void) {
-//TODO add state machine code here
-}
-
 
 #ifdef USE_FULL_ASSERT
 
