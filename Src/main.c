@@ -55,8 +55,8 @@ UART_HandleTypeDef mbuart;
 
 /* USER CODE BEGIN PV */
 
-static int16_t hold_regs[] = { 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006,
-		0x0008, 0x0009, 0x000A };
+static int16_t hold_regs[124];/* = { 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006,
+		0x0008, 0x0009, 0x000A };*/
 static int16_t event_count = 0;
 /* USER CODE END PV */
 
@@ -174,9 +174,6 @@ int main(void) {
 					event_count++;
 				}
 				break;
-
-				//TODO Add read-write registers function
-
 			default:    //We don't support the function, so return exception
 				modbus_exception_rsp(MODBUS_ADDRESS, modbus_rx.func,
 						ILLEGAL_FUNCTION);

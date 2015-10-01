@@ -17,12 +17,13 @@
 /*
  * Definitions
  * */
-
+#define DATAPOINTS 2048
+#define FILTWIN	64
 
 /*
  * Global variables
  * */
-enum measureStates{
+enum measureStates {
 	measureIdle,
 	measureStart,
 	measureAquisition1,
@@ -31,10 +32,21 @@ enum measureStates{
 	measureParamEstimate
 } measureState;
 
+int16_t inputBuffer[DATAPOINTS];
+int16_t filterBuffer[FILTWIN];
+int16_t filterA[FILTWIN];
+int16_t filterB[FILTWIN];
+int16_t alphaBuffer[FILTWIN];
+int16_t betaBuffer[FILTWIN];
+int16_t gammaBufer[FILTWIN];
+int16_t temperature1Buffer[FILTWIN];
+int16_t temperature2Buffer[FILTWIN];
+int16_t temperatureInternalBuffer[FILTWIN];
+
+
 /*
  * Function prototypes
  * */
-
 
 /*
  * Private prototypes
@@ -43,6 +55,7 @@ enum measureStates{
 
 /* Measure cycle and states processing*/
 void Measure(void);
-
+/* Processing indicator leds */
+void LedsProcessing(void);
 
 #endif /* INC_SYNCCYCLE_H_ */
