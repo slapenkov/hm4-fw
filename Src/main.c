@@ -41,6 +41,7 @@
 #define MODBUS_ADDRESS 0x01 //set slave address
 
 #include "modbus.h"
+#include "syncCycle.h"
 
 /* USER Includes END*/
 
@@ -349,6 +350,14 @@ void MX_GPIO_Init(void) {
 
 }
 
+/*
+ * SYSTICK callback processing
+ * */
+void HAL_SYSTICK_Callback(void) {
+	/* Calls every ticks */
+	Measure();
+	LedsProcessing();
+}
 
 
 #ifdef USE_FULL_ASSERT

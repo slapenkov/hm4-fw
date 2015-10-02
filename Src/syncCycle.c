@@ -8,15 +8,6 @@
 #include "syncCycle.h"
 
 /*
- * SYSTICK callback processing
- * */
-void HAL_SYSTICK_Callback(void) {
-	/* Calls every ticks */
-	Measure();
-	LedsProcessing();
-}
-
-/*
  * Function implementations
  * */
 void Measure(void) {
@@ -25,11 +16,18 @@ void Measure(void) {
 	case measureIdle:
 		break;
 	case measureStart:
+		//inputBufferIdx = 0; //reset input buffer index
+
+		//set DAC
+
+		measureState = measureAquisition1;	//next state
 		break;
 	case measureAquisition1:
-		//read ADC result
-		//filtering
+		HAL_ADC_Start(&hadc1);	//start conversion
+		HAL_ADC_PollForConversion(&hadc1,1); //wait for conversion complete
+		//inputBuffer[inputBufferIdx] = HAL_ADC_GetValue(&hadc1);	//read current ADC result
 		//calculate next DAC
+		//TODO use Bresenham's line algorithm
 		//set DAC
 		//start ADC
 		break;
@@ -42,7 +40,6 @@ void Measure(void) {
 	};
 }
 
-
-void LedsProcessing(void){
+void LedsProcessing(void) {
 
 }

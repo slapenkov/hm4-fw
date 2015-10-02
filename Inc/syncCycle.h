@@ -43,6 +43,10 @@ int16_t temperature1Buffer[FILTWIN];
 int16_t temperature2Buffer[FILTWIN];
 int16_t temperatureInternalBuffer[FILTWIN];
 
+//int16_t inputBufferIdx=0;	//input buffer index
+
+extern ADC_HandleTypeDef hadc1;
+
 
 /*
  * Function prototypes
