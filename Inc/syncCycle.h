@@ -32,18 +32,7 @@ enum measureStates {
 	measureParamEstimate
 } measureState;
 
-int16_t inputBuffer[DATAPOINTS];
-int16_t filterBuffer[FILTWIN];
-int16_t filterA[FILTWIN];
-int16_t filterB[FILTWIN];
-int16_t alphaBuffer[FILTWIN];
-int16_t betaBuffer[FILTWIN];
-int16_t gammaBufer[FILTWIN];
-int16_t temperature1Buffer[FILTWIN];
-int16_t temperature2Buffer[FILTWIN];
-int16_t temperatureInternalBuffer[FILTWIN];
 
-//int16_t inputBufferIdx=0;	//input buffer index
 
 extern ADC_HandleTypeDef hadc1;
 
@@ -61,5 +50,8 @@ extern ADC_HandleTypeDef hadc1;
 void Measure(void);
 /* Processing indicator leds */
 void LedsProcessing(void);
+
+/* Convert saw voltage into dac level and setup saw dac */
+void SetSaw(int16_t sawVoltage);
 
 #endif /* INC_SYNCCYCLE_H_ */
