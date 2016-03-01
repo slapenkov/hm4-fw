@@ -73,7 +73,6 @@ void Measure(void) {
 }
 
 void LedsProcessing(void) {
-
 }
 
 void SetSaw(int16_t sawVoltage) {

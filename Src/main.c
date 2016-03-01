@@ -35,7 +35,7 @@
 #include "stm32f1xx_hal.h"
 
 /* USER Includes @ definitions */
-#define MODBUS_SERIAL_BAUD 115200 //set speed
+#define MODBUS_SERIAL_BAUD 9600 //set speed
 #define MODBUS_SWITCH USART_1
 #define MODBUS_SERIAL_RX_BUFFER_SIZE  256
 #define MODBUS_ADDRESS 0x01 //set slave address
@@ -272,7 +272,7 @@ void MX_TIM7_Init(void) {
 	mbtim.Instance = TIM7;
 	mbtim.Init.Prescaler = 32;
 	mbtim.Init.CounterMode = TIM_COUNTERMODE_UP;
-	mbtim.Init.Period = 4000;
+	mbtim.Init.Period = 1;
 	mbtim.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	HAL_TIM_Base_Init(&mbtim);
 

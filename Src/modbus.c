@@ -153,6 +153,8 @@ void modbus_enable_timeout(uint8_t enable)
    //timer IRQ Handler - modbus timeout now
    void TIM7_IRQHandler(void)
    {
+	   HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
+
       if((modbus_serial_state == MODBUS_GETDATA) && (modbus_serial_crc.d == 0x0000) && (!modbus_serial_new))
       {
          modbus_rx.len-=2;
@@ -224,6 +226,7 @@ void USART3_IRQHandler(void)
 #endif
 {
    char c;
+   HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
    #if (MODBUS_SERIAL_TYPE==MODBUS_ASCII)
       static uint8_t two_characters=0;
       static uint8_t datah,datal,data;
